@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Park Space Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #1a1a2e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Enhanced Animated Background */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 111, 97, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(26, 26, 46, 0.9));
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { 
+                transform: rotate(0deg) scale(1); 
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                transform: rotate(1deg) scale(1.02); 
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                transform: rotate(0deg) scale(1.05); 
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                transform: rotate(-1deg) scale(1.02); 
+                filter: hue-rotate(270deg);
+            }
+        }
+
+        /* Enhanced Floating Elements */
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+            filter: blur(1px);
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.15));
+            animation-duration: 20s;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 80%;
+            background: linear-gradient(45deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+            animation-duration: 25s;
+            animation-delay: 5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 60%;
+            background: linear-gradient(45deg, rgba(79, 172, 254, 0.15), rgba(102, 126, 234, 0.1));
+            animation-duration: 30s;
+            animation-delay: 10s;
+        }
+
+        .shape:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            left: 30%;
+            background: linear-gradient(45deg, rgba(255, 111, 97, 0.1), rgba(240, 147, 251, 0.1));
+            animation-duration: 35s;
+            animation-delay: 15s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) rotate(36deg) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(-10vh) rotate(324deg) scale(1);
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .signup-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1500px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px);
+            border-radius: 30px;
+            box-shadow: 
+                0 30px 100px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(60px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .signup-header {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.15), 
+                rgba(118, 75, 162, 0.2),
+                rgba(240, 147, 251, 0.1));
+            backdrop-filter: blur(30px);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signup-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .signup-header h2 {
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 
+                0 0 40px rgba(102, 126, 234, 0.6),
+                0 0 80px rgba(102, 126, 234, 0.3);
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, #ffffff, #e0e7ff, #c7d2fe);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .signup-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        .signup-body {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 50px;
+            padding: 50px;
+            min-height: 650px;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .role-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .role-card {
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            color: white;
+            max-width: 350px;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.0) 0%, 
+                rgba(118, 75, 162, 0.0) 100%);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .role-card:hover::before {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.2) 0%, 
+                rgba(118, 75, 162, 0.2) 100%);
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 
+                0 25px 60px rgba(102, 126, 234, 0.25),
+                0 0 0 1px rgba(102, 126, 234, 0.3);
+        }
+
+        .role-card.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.15);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 30px 80px rgba(102, 126, 234, 0.4),
+                0 0 0 2px rgba(102, 126, 234, 0.5);
+        }
+
+        .role-card.active::before {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.25) 0%, 
+                rgba(118, 75, 162, 0.25) 100%);
+        }
+
+        .role-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.3));
+        }
+
+        .role-card h5 {
+            font-weight: 800;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .role-card p {
+            opacity: 0.85;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-control, .form-select, .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 
+                0 0 0 0.3rem rgba(102, 126, 234, 0.25),
+                0 10px 30px rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .map-section h5 {
+            color: white;
+            margin-bottom: 25px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .location-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .location-btn {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .location-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 40px rgba(102, 126, 234, 0.25),
+                0 0 0 1px rgba(102, 126, 234, 0.3);
+        }
+
+        .location-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+            box-shadow: 
+                0 15px 40px rgba(102, 126, 234, 0.4),
+                0 0 0 2px rgba(102, 126, 234, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        #map {
+            height: 350px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .coordinates-display {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .coordinates-display .coord-item {
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .coordinates-display .coord-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            border: none;
+            padding: 18px 40px;
+            color: white;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            width: 100%;
+            transition: all 0.5s ease;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 15px 40px rgba(102, 126, 234, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.7s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 20px 60px rgba(102, 126, 234, 0.5),
+                0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .provider-fields {
+            display: none;
+            animation: slideDown 0.6s ease;
+        }
+
+        .provider-fields.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .result-message {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            backdrop-filter: blur(30px);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .result-success {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+
+        .result-error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 992px) {
+            .signup-body {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 30px;
+            }
+            
+            .map-section {
+                position: static;
+                order: -1;
+            }
+            
+            #map {
+                height: 300px;
+            }
+
+            .signup-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .signup-container {
+                margin: 10px;
+                max-width: none;
+            }
+            
+            .signup-header {
+                padding: 30px 20px;
+            }
+            
+            .signup-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .signup-body {
+                padding: 30px 20px;
+            }
+            
+            .role-card {
+                padding: 25px 30px;
+            }
+        }
+
+        /* Custom Select Styling */
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Enhanced Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.6), rgba(118, 75, 162, 0.6));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+        }
+
+        .direct-signup {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .direct-signup h4 {
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .direct-signup p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animated"></div>
+    
+    <!-- Floating Shapes -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="signup-container">
+        <div class="signup-header">
+            <h2><i class="fas fa-rocket"></i> Join Park Space Hub</h2>
+            <p>Start earning from your parking space today</p>
+        </div>
+
+        <div class="signup-body">
+            <!-- Form Section (Left) -->
+            <div class="form-section">
+                <form id="signupForm">
+                    <!-- Direct Role Assignment -->
+                    <div class="direct-signup">
+                        <h4>Rent Your Parking Space</h4>
+                        <p>Complete the form below to start earning from your parking space</p>
+                    </div>
+
+                    <input type="hidden" name="role" id="selectedRole" value="provider">
+
+                    <!-- Basic Information -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label"><i class="fas fa-user"></i> First Name *</label>
+                            <input type="text" name="first_name" class="form-control" placeholder="Enter first name" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label"><i class="fas fa-user"></i> Last Name *</label>
+                            <input type="text" name="last_name" class="form-control" placeholder="Enter last name" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label"><i class="fas fa-envelope"></i> Email Address *</label>
+                            <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label"><i class="fas fa-phone"></i> Mobile Number</label>
+                            <input type="tel" name="mobile_number" class="form-control" placeholder="+91 9876543210">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label"><i class="fas fa-lock"></i> Password <small>(optional)</small></label>
+                        <input type="password" name="password" class="form-control" placeholder="Create a password">
+                    </div>
+
+                    <!-- Provider-specific fields (Always visible) -->
+                    <div id="providerFields" class="provider-fields show">
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                        <input type="hidden" name="address" id="addressField">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label"><i class="fas fa-car"></i> Parking Type *</label>
+                                <select name="parking_type" class="form-select" required>
+                                    <option value="">Select Type</option>
+                                    <option value="covered">🏠 Covered Parking</option>
+                                    <option value="open">🌤️ Open Parking</option>
+                                    <option value="garage">🏢 Private Garage</option>
+                                    <option value="driveway">🛣️ Driveway</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label"><i class="fas fa-rupee-sign"></i> Hourly Rate *</label>
+                                <input type="number" name="hourly_rate" class="form-control" placeholder="₹50" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label"><i class="fas fa-info-circle"></i> Description</label>
+                            <textarea name="description" class="form-control" rows="4" placeholder="Describe your parking space - security features, accessibility, nearby landmarks, special instructions..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span id="btnText"><i class="fas fa-rocket"></i> Create Account & Start Earning</span>
+                        <span id="btnLoading" class="loading" style="display: none;"></span>
+                    </button>
+
+                    <div id="result" class="result-message" style="display: none;"></div>
+                </form>
+            </div>
+
+            <!-- Map Section (Right) - Always visible -->
+            <div class="map-section" id="mapSection">
+                <h5><i class="fas fa-map-marked-alt"></i> Set Your Parking Location</h5>
+                
+                <div class="location-buttons">
+                    <button type="button" class="location-btn" id="getCurrentLocation">
+                        <i class="fas fa-crosshairs"></i> Use Current Location
+                    </button>
+                    <button type="button" class="location-btn" id="selectOnMap">
+                        <i class="fas fa-mouse-pointer"></i> Click on Map to Select
+                    </button>
+                </div>
+
+                <div id="map"></div>
+                
+                <div class="coordinates-display" id="coordinates" style="display: none;">
+                    <div class="coord-item">
+                        <strong>Latitude:</strong> <span id="lat">--</span>
+                    </div>
+                    <div class="coord-item">
+                        <strong>Longitude:</strong> <span id="lng">--</span>
+                    </div>
+                    <div class="coord-item">
+                        <strong>Address:</strong><br>
+                        <span id="address">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3GU3ja3NVVtDtSbGYV8nfGPIzEIuSStc&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+        let marker;
+        let geocoder;
+        let selectOnMapMode = false;
+
+        // Initialize Google Map
+        function initMap() {
+            const defaultLocation = { lat: 22.5726, lng: 88.3639 }; // Kolkata
+            
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: defaultLocation,
+                zoom: 13,
+                styles: [
+                    {
+                        "featureType": "all",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"color": "#0a0a1a"}]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{"color": "#ffffff"}]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{"color": "#0a0a1a"}, {"weight": 2}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"color": "#1a237e"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"color": "#16213e"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"color": "#1a1a2e"}]
+                    }
+                ],
+                disableDefaultUI: false,
+                zoomControl: true,
+                mapTypeControl: false,
+                scaleControl: false,
+                streetViewControl: false,
+                rotateControl: false,
+                fullscreenControl: true
+            });
+
+            marker = new google.maps.Marker({
+                map: map,
+                position: defaultLocation,
+                draggable: true,
+                title: 'Your Parking Location',
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#667eea" stroke="#ffffff" stroke-width="2"/>
+                            <path d="M20 10C16.69 10 14 12.69 14 16C14 20.5 20 30 20 30S26 20.5 26 16C26 12.69 23.31 10 20 10ZM20 18.5C18.62 18.5 17.5 17.38 17.5 16S18.62 13.5 20 13.5S22.5 14.62 22.5 16S21.38 18.5 20 18.5Z" fill="white"/>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(40, 40),
+                    anchor: new google.maps.Point(20, 40)
+                },
+                animation: google.maps.Animation.DROP
+            });
+
+            geocoder = new google.maps.Geocoder();
+
+            // Set initial coordinates
+            updateCoordinates(defaultLocation.lat, defaultLocation.lng);
+            reverseGeocode(defaultLocation.lat, defaultLocation.lng);
+
+            // Click on map to set location
+            map.addListener('click', function(event) {
+                if (selectOnMapMode) {
+                    const lat = event.latLng.lat();
+                    const lng = event.latLng.lng();
+                    
+                    marker.setPosition({lat: lat, lng: lng});
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(() => marker.setAnimation(null), 750);
+                    
+                    updateCoordinates(lat, lng);
+                    reverseGeocode(lat, lng);
+                    
+                    showResult('✅ Location updated successfully!', 'success');
+                    setTimeout(() => document.getElementById('result').style.display = 'none', 2000);
+                }
+            });
+
+            // Marker drag event
+            marker.addListener('dragend', function() {
+                const position = marker.getPosition();
+                const lat = position.lat();
+                const lng = position.lng();
+                updateCoordinates(lat, lng);
+                reverseGeocode(lat, lng);
+                showResult('✅ Location updated by dragging!', 'success');
+                setTimeout(() => document.getElementById('result').style.display = 'none', 2000);
+            });
+
+            // Add some visual feedback
+            marker.addListener('dragstart', function() {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            });
+        }
+
+        // Use current location
+        document.getElementById('getCurrentLocation').addEventListener('click', function () {
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting Location...';
+            btn.disabled = true;
+            selectOnMapMode = false;
+            document.getElementById('selectOnMap').classList.remove('active');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        const pos = { lat: lat, lng: lng };
+                        map.setCenter(pos);
+                        map.setZoom(16);
+                        marker.setPosition(pos);
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
+                        setTimeout(() => marker.setAnimation(null), 750);
+
+                        updateCoordinates(lat, lng);
+                        reverseGeocode(lat, lng);
+                        
+                        btn.innerHTML = '<i class="fas fa-check"></i> Location Found!';
+                        btn.classList.add('active');
+                        showResult('🎯 Current location set successfully!', 'success');
+
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                            document.getElementById('result').style.display = 'none';
+                        }, 3000);
+                    },
+                    (error) => {
+                        let errorMsg = 'Location access denied';
+                        switch(error.code) {
+                            case 1: errorMsg = 'Location access denied by user'; break;
+                            case 2: errorMsg = 'Location unavailable'; break;
+                            case 3: errorMsg = 'Location request timeout'; break;
+                            default: errorMsg = 'An unknown error occurred'; break;
+                        }
+
+                        showResult('❌ ' + errorMsg, 'error');
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 300000
+                    }
+                );
+            } else {
+                showResult('❌ Geolocation not supported by this browser', 'error');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Select on map mode
+        document.getElementById('selectOnMap').addEventListener('click', function () {
+            selectOnMapMode = !selectOnMapMode;
+            
+            if (selectOnMapMode) {
+                this.classList.add('active');
+                this.innerHTML = '<i class="fas fa-times"></i> Cancel Selection';
+                document.getElementById('getCurrentLocation').classList.remove('active');
+                showResult('🎯 Click anywhere on the map to set your parking location', 'success');
+                
+                // Add map cursor style
+                map.setOptions({
+                    draggableCursor: 'crosshair',
+                    draggingCursor: 'crosshair'
+                });
+            } else {
+                this.classList.remove('active');
+                this.innerHTML = '<i class="fas fa-mouse-pointer"></i> Click on Map to Select';
+                document.getElementById('result').style.display = 'none';
+                
+                // Reset map cursor
+                map.setOptions({
+                    draggableCursor: null,
+                    draggingCursor: null
+                });
+            }
+        });
+
+        function updateCoordinates(lat, lng) {
+            document.getElementById('lat').textContent = lat.toFixed(6);
+            document.getElementById('lng').textContent = lng.toFixed(6);
+            
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            
+            document.getElementById('coordinates').style.display = 'block';
+        }
+
+        function reverseGeocode(lat, lng) {
+            const latlng = { lat: lat, lng: lng };
+            
+            geocoder.geocode({ location: latlng }, (results, status) => {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        const address = results[0].formatted_address;
+                        document.getElementById('address').textContent = address;
+                        document.getElementById('addressField').value = address;
+                    } else {
+                        const fallbackAddress = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                        document.getElementById('address').textContent = fallbackAddress;
+                        document.getElementById('addressField').value = fallbackAddress;
+                    }
+                } else {
+                    const fallbackAddress = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                    document.getElementById('address').textContent = fallbackAddress;
+                    document.getElementById('addressField').value = fallbackAddress;
+                }
+            });
+        }
+
+        // Enhanced form validation
+        function validateForm() {
+            const requiredFields = [
+                { field: 'first_name', message: 'First name is required' },
+                { field: 'last_name', message: 'Last name is required' },
+                { field: 'email', message: 'Email address is required' },
+                { field: 'parking_type', message: 'Please select parking type' },
+                { field: 'hourly_rate', message: 'Hourly rate is required' }
+            ];
+
+            for (let req of requiredFields) {
+                const field = document.querySelector(`[name="${req.field}"]`);
+                if (!field.value.trim()) {
+                    showResult('❌ ' + req.message, 'error');
+                    field.focus();
+                    return false;
+                }
+            }
+
+            // Validate email format
+            const email = document.querySelector('[name="email"]').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showResult('❌ Please enter a valid email address', 'error');
+                document.querySelector('[name="email"]').focus();
+                return false;
+            }
+
+            // Check if location is set
+            const lat = document.getElementById('latitude').value;
+            const lng = document.getElementById('longitude').value;
+            if (!lat || !lng) {
+                showResult('❌ Please set your parking space location on the map', 'error');
+                return false;
+            }
+
+            // Validate hourly rate
+            const rate = parseFloat(document.querySelector('[name="hourly_rate"]').value);
+            if (rate <= 0) {
+                showResult('❌ Hourly rate must be greater than 0', 'error');
+                document.querySelector('[name="hourly_rate"]').focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Signup form submit
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-block';
+
+            try {
+                // Collect all form data
+                const formData = new FormData(this);
+                const data = {};
+                
+                // Add all form fields to data object
+                formData.forEach((value, key) => {
+                    if (value.trim()) data[key] = value.trim();
+                });
+
+                // Add additional metadata
+                data.created_at = new Date().toISOString();
+                data.latitude = parseFloat(document.getElementById('latitude').value);
+                data.longitude = parseFloat(document.getElementById('longitude').value);
+                data.address = document.getElementById('addressField').value;
+                
+                // Convert hourly_rate to number
+                if (data.hourly_rate) {
+                    data.hourly_rate = parseFloat(data.hourly_rate);
+                }
+
+                console.log('Sending data:', data);
+
+                // Send POST request to Django backend
+                const response = await fetch('/user/signup/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Success response
+                    let successMessage = '🎉 Congratulations! Your account has been created successfully!';
+                    
+                    if (result.generated_password && result.generated_password !== 'Provided by user') {
+                        successMessage += `\n\n📧 Login details sent to: ${result.email}`;
+                        if (result.generated_password) {
+                            successMessage += `\n🔑 Your temporary password: ${result.generated_password}`;
+                            successMessage += `\n\n💡 You can change this password after logging in.`;
+                        }
+                    }
+                    
+                    successMessage += `\n\n🚀 You can now start earning from your parking space!`;
+                    
+                    showResult(successMessage, 'success');
+
+                    // Reset form after successful submission
+                    setTimeout(() => {
+                        this.reset();
+                        document.getElementById('coordinates').style.display = 'none';
+                        document.querySelectorAll('.location-btn').forEach(btn => btn.classList.remove('active'));
+                        selectOnMapMode = false;
+                        
+                        // Reset map cursor
+                        map.setOptions({
+                            draggableCursor: null,
+                            draggingCursor: null
+                        });
+                        
+                        // Reset to default location
+                        const defaultLocation = { lat: 22.5726, lng: 88.3639 };
+                        map.setCenter(defaultLocation);
+                        map.setZoom(13);
+                        marker.setPosition(defaultLocation);
+                        updateCoordinates(defaultLocation.lat, defaultLocation.lng);
+                        reverseGeocode(defaultLocation.lat, defaultLocation.lng);
+                        
+                    }, 6000);
+
+                } else {
+                    // Error response from server
+                    const errorMessage = result.error || 'Registration failed. Please try again.';
+                    showResult('❌ ' + errorMessage, 'error');
+                }
+
+            } catch (error) {
+                console.error('Network error:', error);
+                showResult('❌ Network error occurred. Please check your internet connection and try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+            }
+        });
+
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = message.replace(/\n/g, '<br>');
+            resultDiv.className = `result-message result-${type}`;
+            resultDiv.style.display = 'block';
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    resultDiv.style.display = 'none';
+                }, 8000);
+            }
+        }
+
+        // Enhanced entrance animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 1s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Real-time form validation feedback
+        document.querySelectorAll('input[required], select[required]').forEach(field => {
+            field.addEventListener('blur', function() {
+                if (!this.value.trim()) {
+                    this.style.borderColor = '#ef4444';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(239, 68, 68, 0.25)';
+                } else {
+                    this.style.borderColor = '#22c55e';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(34, 197, 94, 0.25)';
+                    setTimeout(() => {
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }, 2000);
+                }
+            });
+        });
+
+        // Auto-focus first field when page loads
+        setTimeout(() => {
+            document.querySelector('[name="first_name"]').focus();
+        }, 1000);
+
+    </script>
+</body>
+</html>

@@ -40,7 +40,7 @@ class ParkingSpotAPIView(View):
                         "max_vehicle_size": spot.max_vehicle_size,
                         "availability_hours": spot.availability_hours or "24/7",
                         "is_available": spot.is_available,
-                        "contact_phone": spot.contact_phone,
+                        "contact_phone": owner.mobile_number,
                         "description": getattr(spot, 'description', ''),
                         "distance_km": round(distance, 2),
                         "owner": {

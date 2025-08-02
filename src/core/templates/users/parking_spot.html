@@ -71,6 +71,138 @@
             display: flex;
             gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 350px;
+        }
+
+        .radius-container {
+            position: relative;
+        }
+
+        .radius-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .radius-select:focus {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radius-select option {
+            background: #1a1a2e;
+            color: white;
+            padding: 0.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-input:focus {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            z-index: 1002;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-suggestions.show {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .suggestion-icon {
+            color: #667eea;
+            width: 16px;
+        }
+
+        .suggestion-text {
+            flex: 1;
+        }
+
+        .suggestion-main {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .suggestion-sub {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
         }
 
         .location-btn {
@@ -128,6 +260,36 @@
         #map {
             height: 100%;
             width: 100%;
+            cursor: crosshair;
+        }
+
+        .click-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            font-weight: 600;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+        }
+
+        .click-hint.hidden {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .info-card {
@@ -385,6 +547,40 @@
             opacity: 0.7;
         }
 
+        .search-marker {
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border: 3px solid white;
+            border-radius: 50%;
+            position: relative;
+            animation: searchPulse 2s infinite;
+        }
+
+        .search-marker::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ff4757;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes searchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes ripple {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
         .status-toast {
             position: fixed;
             top: 100px;
@@ -448,10 +644,38 @@
         @media (max-width: 768px) {
             .header {
                 padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
             }
             
             .header h1 {
                 font-size: 1.2rem;
+            }
+            
+            .header-controls {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.75rem;
+            }
+            
+            .search-container {
+                max-width: none;
+                order: 1;
+            }
+            
+            .radius-container {
+                order: 2;
+                width: 100%;
+            }
+            
+            .radius-select {
+                width: 100%;
+            }
+            
+            .location-btn {
+                order: 3;
+                width: 100%;
+                justify-content: center;
             }
             
             .info-card {
@@ -469,6 +693,13 @@
                 top: 0.5rem;
                 left: 0.5rem;
             }
+
+            .click-hint {
+                font-size: 0.9rem;
+                padding: 0.75rem 1.5rem;
+                max-width: calc(100vw - 2rem);
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -482,6 +713,26 @@
             </div>
         </div>
         <div class="header-controls">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Search location: Delhi, Connaught Place..."
+                    autocomplete="off"
+                >
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <div class="radius-container">
+                <select class="radius-select" id="radiusSelect">
+                    <option value="5">5 KM</option>
+                    <option value="10">10 KM</option>
+                    <option value="15">15 KM</option>
+                    <option value="25" selected>25 KM</option>
+                    <option value="50">50 KM</option>
+                </select>
+            </div>
             <button class="location-btn" id="getLocationBtn">
                 <i class="fas fa-location-crosshairs"></i>
                 Find Nearby Spots
@@ -491,6 +742,11 @@
 
     <div class="map-container">
         <div id="map"></div>
+        
+        <div class="click-hint" id="clickHint">
+            <i class="fas fa-mouse-pointer"></i>
+            Click anywhere on map or search address to find parking spots
+        </div>
         
         <div class="floating-controls">
             <button class="control-btn" id="centerBtn" title="Center on location">
@@ -558,12 +814,15 @@
                     </div>
                     <div class="info-value" id="ownerEmail">-</div>
                 </div>
+                <div class="info-row">
+                    <div class="info-label">
+                        <i class="fas fa-envelope"></i>
+                        <span>Call Owner</span>
+                    </div>
+                    <div class="info-value" id="callOwner">-</div>
+                </div>
                 
                 <div class="contact-section">
-                    <button class="contact-btn" id="callOwner">
-                        <i class="fas fa-phone"></i>
-                        Call Owner
-                    </button>
                     <button class="contact-btn secondary-btn" id="bookSpot">
                         <i class="fas fa-calendar-check"></i>
                         Book Now
@@ -577,7 +836,7 @@
         <div class="loading-content">
             <div class="loading-spinner"></div>
             <div class="loading-text">Finding Premium Parking Spots</div>
-            <div class="loading-subtext">Searching in your area...</div>
+            <div class="loading-subtext">Searching in selected area...</div>
         </div>
     </div>
 
@@ -591,6 +850,29 @@
         let userLocation;
         let parkingSpots = [];
         let markers = [];
+        let searchMarker = null;
+        let isMapInitialized = false;
+        let currentSearchRadius = 25; // Default 25km
+        
+        // Simple places data for suggestions (since Google Places might not work)
+        const popularPlaces = [
+            { name: "Connaught Place", city: "Delhi", lat: 28.6315, lng: 77.2167 },
+            { name: "India Gate", city: "Delhi", lat: 28.6129, lng: 77.2295 },
+            { name: "Red Fort", city: "Delhi", lat: 28.6562, lng: 77.2410 },
+            { name: "Qutub Minar", city: "Delhi", lat: 28.5245, lng: 77.1855 },
+            { name: "Lotus Temple", city: "Delhi", lat: 28.5535, lng: 77.2588 },
+            { name: "Gateway of India", city: "Mumbai", lat: 19.0722, lng: 72.8347 },
+            { name: "Marine Drive", city: "Mumbai", lat: 18.9440, lng: 72.8234 },
+            { name: "Chhatrapati Shivaji Terminus", city: "Mumbai", lat: 18.9401, lng: 72.8350 },
+            { name: "City Palace", city: "Jaipur", lat: 26.9260, lng: 75.8237 },
+            { name: "Hawa Mahal", city: "Jaipur", lat: 26.9239, lng: 75.8267 },
+            { name: "Victoria Memorial", city: "Kolkata", lat: 22.5448, lng: 88.3426 },
+            { name: "Howrah Bridge", city: "Kolkata", lat: 22.5858, lng: 88.3469 },
+            { name: "Lalbagh Botanical Garden", city: "Bangalore", lat: 12.9507, lng: 77.5848 },
+            { name: "Cubbon Park", city: "Bangalore", lat: 12.9763, lng: 77.5993 },
+            { name: "Charminar", city: "Hyderabad", lat: 17.3616, lng: 78.4747 },
+            { name: "Golconda Fort", city: "Hyderabad", lat: 17.3833, lng: 78.4011 }
+        ];
         
         // Initialize map with premium styling
         function initMap() {
@@ -671,6 +953,270 @@
                 fullscreenControl: false,
                 zoomControl: false
             });
+
+            // Initialize simple geocoder
+            if (typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
+                window.geocoder = new google.maps.Geocoder();
+                console.log('Geocoder ready');
+            }
+
+            // Add map click listener for finding spots
+            map.addListener('click', (event) => {
+                const clickedLocation = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                };
+                
+                // Hide the click hint and search suggestions
+                document.getElementById('clickHint').classList.add('hidden');
+                hideSuggestions();
+                
+                // Close any open info card
+                document.getElementById('infoCard').classList.remove('show');
+                
+                // Search for spots at clicked location
+                searchAtLocation(clickedLocation, event.latLng);
+            });
+
+            isMapInitialized = true;
+            console.log('Map initialized successfully');
+            
+            // Initialize search immediately
+            initSearch();
+            
+            // Hide click hint after a few seconds
+            setTimeout(() => {
+                document.getElementById('clickHint').classList.add('hidden');
+            }, 8000);
+        }
+
+        // Search functionality - Simple and reliable
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const suggestionsDiv = document.getElementById('searchSuggestions');
+            const radiusSelect = document.getElementById('radiusSelect');
+            
+            if (!searchInput || !suggestionsDiv || !radiusSelect) {
+                console.error('Search elements not found');
+                return;
+            }
+
+            // Update radius when changed
+            radiusSelect.addEventListener('change', (e) => {
+                currentSearchRadius = parseInt(e.target.value);
+                console.log('Radius changed to:', currentSearchRadius, 'km');
+                showToast(`Search radius set to ${currentSearchRadius} km`, false);
+            });
+
+            let searchTimeout;
+
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim().toLowerCase();
+                
+                if (query.length < 2) {
+                    hideSuggestions();
+                    return;
+                }
+
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchInPopularPlaces(query);
+                }, 300);
+            });
+
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        console.log('Enter pressed, searching for:', query);
+                        searchLocation(query);
+                        hideSuggestions();
+                    }
+                }
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    hideSuggestions();
+                }
+            });
+
+            console.log('Search initialized successfully');
+        }
+
+        function searchInPopularPlaces(query) {
+            const matches = popularPlaces.filter(place => 
+                place.name.toLowerCase().includes(query) || 
+                place.city.toLowerCase().includes(query)
+            ).slice(0, 5);
+
+            if (matches.length > 0) {
+                showSuggestions(matches);
+            } else {
+                // Try geocoding as fallback
+                console.log('No popular places match, trying geocoding');
+                hideSuggestions();
+            }
+        }
+
+        function showSuggestions(places) {
+            const suggestionsDiv = document.getElementById('searchSuggestions');
+            if (!suggestionsDiv) return;
+            
+            suggestionsDiv.innerHTML = '';
+            console.log('Showing suggestions:', places);
+
+            places.forEach((place, index) => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                
+                item.innerHTML = `
+                    <i class="fas fa-map-marker-alt suggestion-icon"></i>
+                    <div class="suggestion-text">
+                        <div class="suggestion-main">${place.name}</div>
+                        <div class="suggestion-sub">${place.city}, India</div>
+                    </div>
+                `;
+
+                item.addEventListener('click', () => {
+                    console.log('Suggestion clicked:', place);
+                    navigateToPlace(place);
+                    document.getElementById('searchInput').value = place.name;
+                    hideSuggestions();
+                });
+
+                suggestionsDiv.appendChild(item);
+            });
+
+            suggestionsDiv.classList.add('show');
+        }
+
+        function navigateToPlace(place) {
+            const location = { lat: place.lat, lng: place.lng };
+            console.log('Navigating to:', place.name, location);
+            
+            // Move map to location
+            map.setCenter(location);
+            map.setZoom(15);
+
+            // Hide click hint
+            document.getElementById('clickHint').classList.add('hidden');
+
+            // Search for parking spots
+            searchAtLocation(location);
+            
+            showToast(`Found: ${place.name}, ${place.city}`, false);
+        }
+
+        function searchLocation(query) {
+            // First try popular places
+            const exactMatch = popularPlaces.find(place => 
+                place.name.toLowerCase() === query.toLowerCase() ||
+                place.city.toLowerCase() === query.toLowerCase()
+            );
+
+            if (exactMatch) {
+                navigateToPlace(exactMatch);
+                return;
+            }
+
+            // Try partial matches
+            const partialMatch = popularPlaces.find(place => 
+                place.name.toLowerCase().includes(query.toLowerCase()) ||
+                place.city.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (partialMatch) {
+                navigateToPlace(partialMatch);
+                return;
+            }
+
+            // Use geocoder as final fallback
+            if (window.geocoder) {
+                console.log('Using geocoder for:', query);
+                showToast('Searching location...', false);
+                
+                const loading = document.getElementById('loadingOverlay');
+                loading.classList.add('show');
+                document.querySelector('.loading-text').textContent = 'Searching Location';
+                document.querySelector('.loading-subtext').textContent = 'Please wait...';
+
+                window.geocoder.geocode({ 
+                    address: query + ', India',
+                    componentRestrictions: { country: 'IN' }
+                }, (results, status) => {
+                    loading.classList.remove('show');
+                    
+                    if (status === 'OK' && results && results.length > 0) {
+                        const result = results[0];
+                        const location = {
+                            lat: result.geometry.location.lat(),
+                            lng: result.geometry.location.lng()
+                        };
+
+                        console.log('Geocoder found location:', location);
+                        map.setCenter(location);
+                        map.setZoom(15);
+                        
+                        document.getElementById('clickHint').classList.add('hidden');
+                        searchAtLocation(location);
+                        
+                        showToast(`Found: ${result.formatted_address}`, false);
+                    } else {
+                        console.log('Geocoder failed:', status);
+                        showToast('Location not found. Try: Delhi, Mumbai, Bangalore, etc.', true);
+                    }
+                });
+            } else {
+                showToast('Search not available. Try: Delhi, Mumbai, Connaught Place, etc.', true);
+            }
+        }
+
+        function hideSuggestions() {
+            const suggestionsDiv = document.getElementById('searchSuggestions');
+            if (suggestionsDiv) {
+                suggestionsDiv.classList.remove('show');
+            }
+        }
+
+        // Search for parking spots at a specific location
+        function searchAtLocation(location, latLng) {
+            // Remove previous search marker
+            if (searchMarker) {
+                searchMarker.setMap(null);
+            }
+            
+            // Add search marker with animation
+            searchMarker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'Searching here...',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 12,
+                    fillColor: '#ff4757',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 3
+                },
+                animation: google.maps.Animation.DROP,
+                zIndex: 999
+            });
+
+            // Start loading
+            const loading = document.getElementById('loadingOverlay');
+            loading.classList.add('show');
+            
+            // Update loading text
+            document.querySelector('.loading-text').textContent = 'Finding Premium Parking Spots';
+            document.querySelector('.loading-subtext').textContent = 'Searching in selected area...';
+            
+            showToast('Searching for parking spots in this area...', false);
+            
+            // Fetch spots for this location
+            fetchParkingSpotsForLocation(location);
         }
 
         // Get user's current location
@@ -682,6 +1228,10 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating...';
             loading.classList.add('show');
             
+            // Update loading text
+            document.querySelector('.loading-text').textContent = 'Finding Your Location';
+            document.querySelector('.loading-subtext').textContent = 'Please allow location access...';
+            
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
@@ -691,6 +1241,7 @@
                         };
                         
                         map.setCenter(userLocation);
+                        map.setZoom(15);
                         
                         // Premium user location marker
                         new google.maps.Marker({
@@ -708,7 +1259,7 @@
                             zIndex: 1000
                         });
                         
-                        fetchParkingSpots();
+                        fetchParkingSpotsForLocation(userLocation);
                         
                         btn.disabled = false;
                         btn.innerHTML = '<i class="fas fa-check"></i> Location Found';
@@ -724,26 +1275,26 @@
                         btn.disabled = false;
                         btn.innerHTML = '<i class="fas fa-location-crosshairs"></i> Find Nearby Spots';
                         loading.classList.remove('show');
-                        showToast('Could not access location. Please enable GPS.', true);
+                        showToast('Could not access location. Try clicking on the map!', true);
                     }
                 );
             } else {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-location-crosshairs"></i> Find Nearby Spots';
                 loading.classList.remove('show');
-                showToast('Geolocation not supported by this browser.', true);
+                showToast('Geolocation not supported. Click on the map to search!', true);
             }
         }
 
-        // Fetch parking spots
-        async function fetchParkingSpots() {
+        // Fetch parking spots for a specific location
+        async function fetchParkingSpotsForLocation(location) {
             try {
                 // Replace with your actual API endpoint
                 const response = await axios.get('/api/parking-spots/', {
                     params: {
-                        lat: userLocation.lat,
-                        lng: userLocation.lng,
-                        radius: 5
+                        lat: location.lat,
+                        lng: location.lng,
+                        radius: currentSearchRadius
                     }
                 });
                 
@@ -752,51 +1303,67 @@
                 
             } catch (error) {
                 console.error('Error fetching parking spots:', error);
-                parkingSpots = generateMockData();
+                parkingSpots = generateMockDataForLocation(location);
                 displayParkingSpots();
-                showToast(`Found ${parkingSpots.length} premium parking spots!`, false);
+                showToast(`Found ${parkingSpots.length} parking spots within ${currentSearchRadius} km!`, false);
             }
             
             document.getElementById('loadingOverlay').classList.remove('show');
         }
 
-        // Generate premium mock data
-        function generateMockData() {
-            const mockSpots = [];
-            const spotTypes = ['Covered Garage', 'Valet Parking', 'Premium Street', 'Mall VIP', 'Office Executive'];
-            const vehicleSizes = ['Compact Car', 'Sedan', 'SUV', 'Luxury Vehicle'];
+        // Generate premium mock data for a specific location
+        // function generateMockDataForLocation(centerLocation) {
+        //     const mockSpots = [];
+        //     const spotTypes = ['Covered Garage', 'Valet Parking', 'Premium Street', 'Mall VIP', 'Office Executive'];
+        //     const vehicleSizes = ['Compact Car', 'Sedan', 'SUV', 'Luxury Vehicle'];
             
-            for (let i = 0; i < 8; i++) {
-                const latOffset = (Math.random() - 0.5) * 0.01;
-                const lngOffset = (Math.random() - 0.5) * 0.01;
+        //     // Generate spots based on current radius
+        //     const radiusKm = currentSearchRadius;
+        //     const latRange = radiusKm * 0.009; // Approximate degrees per km
+        //     const lngRange = radiusKm * 0.009;
+            
+        //     const numSpots = Math.min(Math.floor(radiusKm / 3) + 5, 15); // More spots for larger radius
+            
+        //     for (let i = 0; i < numSpots; i++) {
+        //         const latOffset = (Math.random() - 0.5) * latRange;
+        //         const lngOffset = (Math.random() - 0.5) * lngRange;
                 
-                mockSpots.push({
-                    id: i + 1,
-                    title: `Premium Spot ${i + 1}`,
-                    latitude: userLocation.lat + latOffset,
-                    longitude: userLocation.lng + lngOffset,
-                    location: `Sector ${i + 1}, Premium Area`,
-                    parking_type: spotTypes[Math.floor(Math.random() * spotTypes.length)],
-                    price_per_hour: Math.floor(Math.random() * 150) + 50,
-                    max_vehicle_size: vehicleSizes[Math.floor(Math.random() * vehicleSizes.length)],
-                    availability_hours: Math.random() > 0.3 ? '24/7' : '6:00 AM - 11:00 PM',
-                    is_available: Math.random() > 0.1,
-                    contact_phone: `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`,
-                    owner: {
-                        first_name: `Owner${i + 1}`,
-                        last_name: `Premium`,
-                        email: `premium.owner${i + 1}@parkspace.com`
-                    }
-                });
-            }
+        //         mockSpots.push({
+        //             id: i + 1,
+        //             title: `Premium Spot ${i + 1}`,
+        //             latitude: centerLocation.lat + latOffset,
+        //             longitude: centerLocation.lng + lngOffset,
+        //             location: `Area ${i + 1}, ${radiusKm}km Zone`,
+        //             parking_type: spotTypes[Math.floor(Math.random() * spotTypes.length)],
+        //             price_per_hour: Math.floor(Math.random() * 150) + 50,
+        //             max_vehicle_size: vehicleSizes[Math.floor(Math.random() * vehicleSizes.length)],
+        //             availability_hours: Math.random() > 0.3 ? '24/7' : '6:00 AM - 11:00 PM',
+        //             is_available: Math.random() > 0.1,
+        //             contact_phone: `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`,
+        //             owner: {
+        //                 first_name: `Owner${i + 1}`,
+        //                 last_name: `Premium`,
+        //                 email: `premium.owner${i + 1}@parkspace.com`
+        //             }
+        //         });
+        //     }
             
-            return mockSpots;
-        }
+        //     return mockSpots;
+        // }
 
         // Display parking spots with premium markers
         function displayParkingSpots() {
+            // Clear existing markers
             markers.forEach(marker => marker.setMap(null));
             markers = [];
+            
+            // Remove search marker after spots are found
+            if (searchMarker) {
+                setTimeout(() => {
+                    searchMarker.setMap(null);
+                    searchMarker = null;
+                }, 1000);
+            }
             
             parkingSpots.forEach((spot, index) => {
                 if (!spot.is_available) return;
@@ -832,14 +1399,31 @@
                 // Stagger the drop animation
                 setTimeout(() => {
                     marker.setMap(map);
-                }, index * 100);
+                }, index * 150);
             });
             
             if (markers.length > 0) {
                 const bounds = new google.maps.LatLngBounds();
-                bounds.extend(userLocation);
                 markers.forEach(marker => bounds.extend(marker.getPosition()));
+                
+                // Include search location in bounds if available
+                if (searchMarker) {
+                    bounds.extend(searchMarker.getPosition());
+                }
+                
+                // Include user location if available
+                if (userLocation) {
+                    bounds.extend(userLocation);
+                }
+                
                 map.fitBounds(bounds);
+                
+                // Ensure minimum zoom level
+                google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
+                    if (map.getZoom() > 16) {
+                        map.setZoom(16);
+                    }
+                });
             }
         }
 
@@ -856,15 +1440,16 @@
                 document.getElementById('availableHours').textContent = spot.availability_hours;
                 document.getElementById('ownerName').textContent = `${spot.owner.first_name} ${spot.owner.last_name}`;
                 document.getElementById('ownerEmail').textContent = spot.owner.email;
+                document.getElementById('callOwner').textContent = spot.contact_phone;
                 
-                const callBtn = document.getElementById('callOwner');
-                callBtn.onclick = () => {
-                    if (spot.contact_phone) {
-                        window.open(`tel:${spot.contact_phone}`);
-                    } else {
-                        showToast('Phone number not available', true);
-                    }
-                };
+                // const callBtn = document.getElementById('callOwner');
+                // callBtn.onclick = () => {
+                //     if (spot.contact_phone) {
+                //         window.open(`tel:${spot.contact_phone}`);
+                //     } else {
+                //         showToast('Phone number not available', true);
+                //     }
+                // };
                 
                 // Position card dynamically
                 const infoCard = document.getElementById('infoCard');
@@ -924,6 +1509,8 @@
                 map.setCenter(userLocation);
                 map.setZoom(15);
                 showToast('Centered on your location', false);
+            } else {
+                showToast('Location not available. Click "Find Nearby Spots" first', true);
             }
         });
 
@@ -939,27 +1526,29 @@
             showToast('Booking system integration coming soon!', false);
         });
 
-        // Close card when clicking on map
-        if (map) {
-            map.addListener('click', () => {
-                document.getElementById('infoCard').classList.remove('show');
-            });
-        }
-
-        // Auto-initialize
-        window.addEventListener('load', () => {
-            setTimeout(getCurrentLocation, 1000);
-        });
-
         // Handle escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 document.getElementById('infoCard').classList.remove('show');
             }
         });
+
+        // Click hint interaction
+        document.getElementById('clickHint').addEventListener('click', () => {
+            document.getElementById('clickHint').classList.add('hidden');
+        });
+
+        // Auto-initialize
+        window.addEventListener('load', () => {
+            console.log('Page loaded, initializing...');            
+            // Show initial hint about functionality
+            setTimeout(() => {
+                showToast('Search any city or click on map to find parking spots!', false);
+            }, 1000);
+        });
     </script>
 
-    <!-- Google Maps API -->
+    <!-- Google Maps API - Simple version -->
     <script async defer 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3GU3ja3NVVtDtSbGYV8nfGPIzEIuSStc&callback=initMap">
     </script>

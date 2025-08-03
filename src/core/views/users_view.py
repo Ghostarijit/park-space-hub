@@ -98,6 +98,7 @@ class UserView(View):
                         'contact_phone': data.pop('contact_phone', None),
                         'availability_hours': data.pop('availability_hours', '24/7')
                     }
+                    data.pop('user_address', None)  # Remove role from user data if present
 
                 # Create user with remaining data
                 user, raw_password = User.add(data)

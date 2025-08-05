@@ -784,6 +784,21 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-4">
+                                <label class="form-label"><i class="fas fa-motorcycle"></i> Vehicle Type Allowed *</label>
+                                <select name="max_vehicle_size" class="form-select" required>
+                                    <option value="">Select Vehicle</option>
+                                    <option value="two_wheeler">🛵 Two-Wheeler (Bike/Scooter)</option>
+                                    <option value="car">🚗 Car (Sedan/Hatchback)</option>
+                                    <option value="suv">🚙 SUV / MUV</option>
+                                    <option value="van">🚐 Van</option>
+                                    <option value="pickup">🛻 Pickup Truck</option>
+                                    <option value="truck">🚚 Large Truck</option>
+                                    <option value="bus">🚌 Bus / Mini-Bus</option>
+                                    <option value="bicycle">🚴 Bicycle</option>
+                                    <option value="auto">🛺 Auto Rickshaw</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
                                 <label class="form-label"><i class="fas fa-rupee-sign"></i> Hourly Rate *</label>
                                 <input type="number" name="hourly_rate" class="form-control" placeholder="₹50" min="1" required>
                             </div>
@@ -1247,6 +1262,7 @@
                 { field: 'email', message: 'Email address is required' },
                 { field: 'user_address', message: 'Address is required' },
                 { field: 'parking_type', message: 'Please select parking type' },
+                { field: 'max_vehicle_size', message: 'Please select Vehicle Type Allowed' },
                 { field: 'hourly_rate', message: 'Hourly rate is required' }
             ];
 

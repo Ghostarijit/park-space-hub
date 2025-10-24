@@ -125,7 +125,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Additional folders where Django will look for static files (development)
 STATICFILES_DIRS = [
-    '/home/ubuntu/park-space-hub/src/',
+    os.path.join(BASE_DIR),  # JSON / CSV files yaha rakhe
 ]
 
 # Default primary key field type

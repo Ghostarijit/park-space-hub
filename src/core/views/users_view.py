@@ -1,5 +1,7 @@
 import traceback
 import json
+import os
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -11,6 +13,8 @@ from core.models.parking_spot import ParkingSpot
 from core.models.users import User
 from core.models.user_role import UserRole
 import pandas as pd
+BASE_DIR = settings.BASE_DIR  # ye park-space-hub/ ko point karega
+SRC_DIR = os.path.join(BASE_DIR)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -189,10 +193,10 @@ def merch_dashboard(request):
     }
 
     # File paths for default CSVs
-    sales_path = '/home/ubuntu/park-space-hub/src/sde2_sales.csv'
-    reviews_path = '/home/ubuntu/park-space-hub/src/sde2_reviews.csv'
-    returns_path = '/home/ubuntu/park-space-hub/src/sde2_returns.csv'
-
+    sales_path = os.path.join(SRC_DIR, 'sde2_sales.csv')
+    reviews_path = os.path.join(SRC_DIR, 'sde2_reviews.csv')
+    returns_path = os.path.join(SRC_DIR, 'sde2_returns.csv')
+    json_path = os.path.join(SRC_DIR, 'sde2_merchtech_dataset.json')
     pid = 'asin'
     product_id_name_dict = {}
 

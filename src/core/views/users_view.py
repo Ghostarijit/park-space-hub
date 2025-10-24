@@ -76,6 +76,7 @@ class UserView(View):
             return JsonResponse({'error': str(e)}, status=500)
 
     def signup(self, request, *args, **kwargs):
+        print("Signup function called")
         # GET or POST /user/signup
         if request.method == 'GET':
             return render(request, 'users/signup.html')
@@ -105,6 +106,11 @@ class UserView(View):
                         'availability_hours': data.pop('availability_hours', '24/7')
                     }
                     data.pop('user_address', None)  # Remove role from user data if present
+                
+                email = data.get('email')
+                existing_user = User.get_by_email(email)  # ya jo method tera User model me hai
+                if existing_user:
+                    return JsonResponse({'error': 'Email already exists'}, status=400)
 
                 # Create user with remaining data
                 user, raw_password = User.add(data)
@@ -191,6 +197,7 @@ def merch_dashboard(request):
         'data': [],
         'chart_data': {},
     }
+
 
     # File paths for default CSVs
     sales_path = os.path.join(SRC_DIR, 'sde2_sales.csv')

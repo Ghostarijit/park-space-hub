@@ -149,7 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Additional folders where Django will look for static files (development)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR),  # JSON / CSV files yaha rakhe
+    os.path.join(BASE_DIR, 'static'),  # dev me yaha se serve hoga
 ]
 
 # Default primary key field type

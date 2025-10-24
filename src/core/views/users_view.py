@@ -12,6 +12,7 @@ from core.auth_utils import generate_jwt, jwt_required
 from core.models.parking_spot import ParkingSpot
 from core.models.users import User
 from core.models.user_role import UserRole
+from django.http import FileResponse, HttpResponse
 import pandas as pd
 BASE_DIR = settings.BASE_DIR  # ye park-space-hub/ ko point karega
 SRC_DIR = os.path.join(BASE_DIR)
@@ -315,6 +316,15 @@ def merch_dashboard(request):
         context['chart_data'] = chart_data
 
     return render(request, 'users/merch_dashboard.html', context)
+
+def download_json(request):
+    # JSON file path
+    json_path = os.path.join(SRC_DIR, 'sde2_merchtech_dataset.json')
+    
+    if os.path.exists(json_path):
+        return FileResponse(open(json_path, 'rb'), as_attachment=True, filename='sde2_merchtech_dataset.json')
+    else:
+        return HttpResponse("File not found", status=404)
 
 
 # ## **Expected Output:**

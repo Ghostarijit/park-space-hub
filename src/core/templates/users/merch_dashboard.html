@@ -48,10 +48,9 @@
           <button type="submit" class="btn btn-primary">Upload JSON</button>
         </form>
 
-        {% load static %}
-      <a href="{% static 'sde2_merchtech_dataset.json' %}" class="btn btn-success" download>
-        Download Sample JSON
-      </a>
+        <a href="{% url 'download_json' %}" class="btn btn-success">
+          Download Sample JSON
+        </a>
       </div>
 
       {% if error %}

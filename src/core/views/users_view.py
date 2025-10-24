@@ -189,9 +189,9 @@ def merch_dashboard(request):
     }
 
     # File paths for default CSVs
-    sales_path = '/opt/edugem/apps/Park-space-hub/src/sde2_sales.csv'
-    reviews_path = '/opt/edugem/apps/Park-space-hub/src/sde2_reviews.csv'
-    returns_path = '/opt/edugem/apps/Park-space-hub/src/sde2_returns.csv'
+    sales_path = '/home/ubuntu/park-space-hub/src/sde2_sales.csv'
+    reviews_path = '/home/ubuntu/park-space-hub/src/sde2_reviews.csv'
+    returns_path = '/home/ubuntu/park-space-hub/src/sde2_returns.csv'
 
     pid = 'asin'
     product_id_name_dict = {}

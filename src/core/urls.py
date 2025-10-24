@@ -16,13 +16,14 @@ Including another URLconf
 """
 
 from django.urls import path
-from core.views.users_view import UserView
+from core.views.users_view import UserView, merch_dashboard
 from core.views.parking_spot_view import ParkingSpotAPIView, parking_spot_view
 
 urlpatterns = [
     path('', UserView.as_view(), name='home'),               
     path('user/', UserView.as_view(), name='user_list'),     
     path('user/signup/', UserView.as_view(), name='signup'), 
+    path('merch-dashboard/', merch_dashboard, name='merch_dashboard'), 
     
     # ✅ HTML render view
     path('parking-spots/', parking_spot_view, name='parking-spot-view'),

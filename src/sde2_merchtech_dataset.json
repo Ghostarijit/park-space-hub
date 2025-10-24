@@ -1,0 +1,246 @@
+{
+  "version": "v1",
+  "generated_at": "2025-09-15T10:42:16.924587",
+  "products": [
+    {
+      "asin": "ASIN-1000",
+      "product": "Vacuum Cleaner",
+      "reviews": [
+        { "asin": "ASIN-1000", "review_text": "Wrong item", "rating": 3 },
+        {
+          "asin": "ASIN-1000",
+          "review_text": "Works as expected",
+          "rating": 4
+        },
+        { "asin": "ASIN-1000", "review_text": "Great product", "rating": 2 },
+        { "asin": "ASIN-1000", "review_text": "Good value", "rating": 2 },
+        { "asin": "ASIN-1000", "review_text": "Comfortable", "rating": 3 }
+      ],
+      "returns": [
+        { "asin": "ASIN-1000", "return_reason": "Late delivery", "count": 3 },
+        {
+          "asin": "ASIN-1000",
+          "return_reason": "Defective product",
+          "count": 4
+        },
+        { "asin": "ASIN-1000", "return_reason": "Late delivery", "count": 3 }
+      ],
+      "sales": [
+        {
+          "asin": "ASIN-1000",
+          "week": 1,
+          "units_sold": 16,
+          "gmv": 772,
+          "refunds": 3
+        },
+        {
+          "asin": "ASIN-1000",
+          "week": 2,
+          "units_sold": 32,
+          "gmv": 1621,
+          "refunds": 4
+        },
+        {
+          "asin": "ASIN-1000",
+          "week": 3,
+          "units_sold": 30,
+          "gmv": 805,
+          "refunds": 3
+        },
+        {
+          "asin": "ASIN-1000",
+          "week": 4,
+          "units_sold": 22,
+          "gmv": 897,
+          "refunds": 2
+        }
+      ]
+    },
+    {
+      "asin": "ASIN-1001",
+      "product": "Office Chair",
+      "reviews": [
+        { "asin": "ASIN-1001", "review_text": "Color mismatch", "rating": 5 },
+        { "asin": "ASIN-1001", "review_text": "Not as described", "rating": 1 },
+        { "asin": "ASIN-1001", "review_text": "Great product", "rating": 2 },
+        { "asin": "ASIN-1001", "review_text": "Good value", "rating": 5 },
+        { "asin": "ASIN-1001", "review_text": "Works as expected", "rating": 2 }
+      ],
+      "returns": [
+        { "asin": "ASIN-1001", "return_reason": "Damaged item", "count": 6 },
+        { "asin": "ASIN-1001", "return_reason": "Damaged item", "count": 4 },
+        { "asin": "ASIN-1001", "return_reason": "Wrong color", "count": 1 }
+      ],
+      "sales": [
+        {
+          "asin": "ASIN-1001",
+          "week": 1,
+          "units_sold": 13,
+          "gmv": 875,
+          "refunds": 4
+        },
+        {
+          "asin": "ASIN-1001",
+          "week": 2,
+          "units_sold": 30,
+          "gmv": 844,
+          "refunds": 5
+        },
+        {
+          "asin": "ASIN-1001",
+          "week": 3,
+          "units_sold": 44,
+          "gmv": 1623,
+          "refunds": 4
+        },
+        {
+          "asin": "ASIN-1001",
+          "week": 4,
+          "units_sold": 46,
+          "gmv": 636,
+          "refunds": 0
+        }
+      ]
+    },
+    {
+      "asin": "ASIN-1002",
+      "product": "LED Monitor",
+      "reviews": [
+        { "asin": "ASIN-1002", "review_text": "Good value", "rating": 5 },
+        { "asin": "ASIN-1002", "review_text": "Great product", "rating": 4 },
+        { "asin": "ASIN-1002", "review_text": "Great product", "rating": 5 },
+        { "asin": "ASIN-1002", "review_text": "Wrong item", "rating": 3 },
+        { "asin": "ASIN-1002", "review_text": "Fast delivery", "rating": 2 }
+      ],
+      "returns": [
+        { "asin": "ASIN-1002", "return_reason": "Size mismatch", "count": 1 },
+        { "asin": "ASIN-1002", "return_reason": "Size mismatch", "count": 2 },
+        { "asin": "ASIN-1002", "return_reason": "Late delivery", "count": 1 }
+      ],
+      "sales": [
+        {
+          "asin": "ASIN-1002",
+          "week": 1,
+          "units_sold": 37,
+          "gmv": 675,
+          "refunds": 1
+        },
+        {
+          "asin": "ASIN-1002",
+          "week": 2,
+          "units_sold": 35,
+          "gmv": 1602,
+          "refunds": 5
+        },
+        {
+          "asin": "ASIN-1002",
+          "week": 3,
+          "units_sold": 39,
+          "gmv": 1227,
+          "refunds": 0
+        },
+        {
+          "asin": "ASIN-1002",
+          "week": 4,
+          "units_sold": 41,
+          "gmv": 1089,
+          "refunds": 1
+        }
+      ]
+    },
+    {
+      "asin": "ASIN-1003",
+      "product": "Wireless Keyboard",
+      "reviews": [
+        { "asin": "ASIN-1003", "review_text": "Very comfortable", "rating": 4 },
+        {
+          "asin": "ASIN-1003",
+          "review_text": "Battery drains fast",
+          "rating": 2
+        },
+        { "asin": "ASIN-1003", "review_text": "Great for gaming", "rating": 5 },
+        { "asin": "ASIN-1003", "review_text": "Keys are soft", "rating": 3 },
+        { "asin": "ASIN-1003", "review_text": "Easy to use", "rating": 4 }
+      ],
+      "returns": [
+        { "asin": "ASIN-1003", "return_reason": "Defective keys", "count": 2 },
+        { "asin": "ASIN-1003", "return_reason": "Late delivery", "count": 1 }
+      ],
+      "sales": [
+        {
+          "asin": "ASIN-1003",
+          "week": 1,
+          "units_sold": 20,
+          "gmv": 500,
+          "refunds": 1
+        },
+        {
+          "asin": "ASIN-1003",
+          "week": 2,
+          "units_sold": 25,
+          "gmv": 620,
+          "refunds": 0
+        },
+        {
+          "asin": "ASIN-1003",
+          "week": 3,
+          "units_sold": 30,
+          "gmv": 750,
+          "refunds": 2
+        },
+        {
+          "asin": "ASIN-1003",
+          "week": 4,
+          "units_sold": 28,
+          "gmv": 680,
+          "refunds": 1
+        }
+      ]
+    },
+    {
+      "asin": "ASIN-1004",
+      "product": "Smartphone Stand",
+      "reviews": [
+        { "asin": "ASIN-1004", "review_text": "Very sturdy", "rating": 5 },
+        { "asin": "ASIN-1004", "review_text": "Easy to assemble", "rating": 4 },
+        { "asin": "ASIN-1004", "review_text": "Looks cheap", "rating": 2 },
+        { "asin": "ASIN-1004", "review_text": "Perfect size", "rating": 5 },
+        { "asin": "ASIN-1004", "review_text": "Works as expected", "rating": 4 }
+      ],
+      "returns": [
+        { "asin": "ASIN-1004", "return_reason": "Damaged", "count": 1 },
+        { "asin": "ASIN-1004", "return_reason": "Late delivery", "count": 1 }
+      ],
+      "sales": [
+        {
+          "asin": "ASIN-1004",
+          "week": 1,
+          "units_sold": 15,
+          "gmv": 300,
+          "refunds": 0
+        },
+        {
+          "asin": "ASIN-1004",
+          "week": 2,
+          "units_sold": 18,
+          "gmv": 360,
+          "refunds": 1
+        },
+        {
+          "asin": "ASIN-1004",
+          "week": 3,
+          "units_sold": 22,
+          "gmv": 440,
+          "refunds": 0
+        },
+        {
+          "asin": "ASIN-1004",
+          "week": 4,
+          "units_sold": 20,
+          "gmv": 400,
+          "refunds": 1
+        }
+      ]
+    }
+  ]
+}

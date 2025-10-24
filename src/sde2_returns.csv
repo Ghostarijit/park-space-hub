@@ -1,0 +1,10 @@
+asin,return_reason,count
+ASIN-1000,Late delivery,3
+ASIN-1000,Defective product,4
+ASIN-1000,Late delivery,3
+ASIN-1001,Damaged item,6
+ASIN-1001,Damaged item,4
+ASIN-1001,Wrong color,1
+ASIN-1002,Size mismatch,1
+ASIN-1002,Size mismatch,2
+ASIN-1002,Late delivery,1

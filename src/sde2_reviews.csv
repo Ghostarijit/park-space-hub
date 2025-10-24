@@ -1,0 +1,16 @@
+asin,review_text,rating
+ASIN-1000,Wrong item,3
+ASIN-1000,Works as expected,4
+ASIN-1000,Great product,2
+ASIN-1000,Good value,2
+ASIN-1000,Comfortable,3
+ASIN-1001,Color mismatch,5
+ASIN-1001,Not as described,1
+ASIN-1001,Great product,2
+ASIN-1001,Good value,5
+ASIN-1001,Works as expected,2
+ASIN-1002,Good value,5
+ASIN-1002,Great product,4
+ASIN-1002,Great product,5
+ASIN-1002,Wrong item,3
+ASIN-1002,Fast delivery,2

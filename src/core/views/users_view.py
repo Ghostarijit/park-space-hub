@@ -10,6 +10,7 @@ from core.auth_utils import generate_jwt, jwt_required
 from core.models.parking_spot import ParkingSpot
 from core.models.users import User
 from core.models.user_role import UserRole
+import pandas as pd
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -27,17 +28,18 @@ class UserView(View):
         # Let GET, PUT fall back to normal method dispatch
         return super().dispatch(request, *args, **kwargs)
 
-    @method_decorator(jwt_required(allowed_roles=['admin']))
+    # @method_decorator(jwt_required(allowed_roles=['admin']))
     def get(self, request, *args, **kwargs):
+        pass
         # GET /user → get all users
-        users = User.get_all()
-        data = [{
-            "id": u.id,
-            "email": u.email,
-            "name": f"{u.first_name} {u.last_name}",
-            "role": u.role.name if u.role else None
-        } for u in users]
-        return JsonResponse(data, safe=False)
+        # users = User.get_all()
+        # data = [{
+        #     "id": u.id,
+        #     "email": u.email,
+        #     "name": f"{u.first_name} {u.last_name}",
+        #     "role": u.role.name if u.role else None
+        # } for u in users]
+        # return JsonResponse(data, safe=False)
 
     def put(self, request, *args, **kwargs):
         # PUT /user → login
@@ -171,4 +173,158 @@ class UserView(View):
                 return JsonResponse({'error': str(e)}, status=500)
 
     def home(self, request, *args, **kwargs):
-        return render(request, 'home.html') 
+        return render(request, 'home.html')
+    
+
+import json
+import pandas as pd
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def merch_dashboard(request):
+    context = {
+        'data': [],
+        'chart_data': {},
+    }
+
+    # File paths for default CSVs
+    sales_path = '/opt/edugem/apps/Park-space-hub/src/sde2_sales.csv'
+    reviews_path = '/opt/edugem/apps/Park-space-hub/src/sde2_reviews.csv'
+    returns_path = '/opt/edugem/apps/Park-space-hub/src/sde2_returns.csv'
+
+    pid = 'asin'
+    product_id_name_dict = {}
+
+    # Helper to build metrics
+    def build_metrics(sales, reviews, returns):
+        # SALES
+        sales_metrics = sales.groupby(pid).agg(
+            total_gmv=('gmv', 'sum'),
+            total_orders=('units_sold', 'sum'),
+            total_refunds=('refunds', 'sum')
+        ).reset_index()
+
+        # REVIEWS
+        reviews['rating'] = pd.to_numeric(reviews['rating'], errors='coerce')
+        reviews_metrics = reviews.groupby(pid).agg(
+            avg_rating=('rating', 'mean'),
+            review_count=('rating', 'count')
+        ).reset_index()
+
+        # RETURNS
+        returns['count'] = pd.to_numeric(returns['count'], errors='coerce').fillna(0)
+        returns_metrics = returns.groupby(pid).agg(
+            returns_count=('count', 'sum')
+        ).reset_index()
+
+        # MERGE
+        df = (
+            sales_metrics.merge(reviews_metrics, on=pid, how='left')
+            .merge(returns_metrics, on=pid, how='left')
+        )
+        df.fillna(0, inplace=True)
+
+        # RETURN RATE
+        df['return_rate'] = df.apply(
+            lambda r: (r['returns_count'] / r['total_orders']) if r['total_orders'] > 0 else 0,
+            axis=1
+        )
+
+        rows = []
+        for _, r in df.iterrows():
+            issues, suggestions = [], []
+
+            if r['total_gmv'] < df['total_gmv'].quantile(0.25):
+                issues.append('Low GMV')
+                suggestions.append('Review pricing & marketing')
+
+            if 0 < r['avg_rating'] < 3.0:
+                issues.append('Low Rating')
+                suggestions.append('Improve quality or descriptions')
+
+            if r['return_rate'] > 0.2:
+                issues.append('High Return Rate')
+                suggestions.append('Check product defects')
+
+            if r['review_count'] < 3 and r['total_gmv'] < df['total_gmv'].median():
+                suggestions.append('Increase review sampling / promos')
+
+            rows.append({
+                'product_id': r[pid],
+                'product_name': product_id_name_dict.get(r[pid], r[pid]),
+                'gmv': round(r['total_gmv'], 2),
+                'avg_rating': round(r['avg_rating'], 2),
+                'return_rate': round(r['return_rate'] * 100, 2),
+                'total_orders': int(r['total_orders']),
+                'issues': ', '.join(issues) or 'No major issues',
+                'suggestions': '; '.join(dict.fromkeys(suggestions)) or 'No action needed',
+            })
+
+        chart_data = {
+            "labels": [r['product_name'] for r in rows],
+            "gmv": [r['gmv'] for r in rows],
+            "rating": [r['avg_rating'] for r in rows],
+            "returns": [r['return_rate'] for r in rows],
+        }
+
+        return rows, chart_data
+
+    # 🔹 If user uploaded a JSON
+    if request.method == 'POST' and request.FILES.get('json_file'):
+        file = request.FILES['json_file']
+        data = json.load(file)
+        products = data['products']
+
+        sales_data, reviews_data, returns_data = [], [], []
+
+        for product in products:
+            asin = product['asin']
+            product_id_name_dict[asin] = product['product']
+            sales_data.extend(product['sales'])
+            reviews_data.extend(product['reviews'])
+            returns_data.extend(product['returns'])
+
+        sales = pd.DataFrame(sales_data)
+        reviews = pd.DataFrame(reviews_data)
+        returns = pd.DataFrame(returns_data)
+
+        rows, chart_data = build_metrics(sales, reviews, returns)
+        context['data'] = rows
+        context['chart_data'] = chart_data
+
+    else:
+        # 🔹 Load default CSV data (when page loads or no JSON uploaded)
+        sales = pd.read_csv(sales_path)
+        reviews = pd.read_csv(reviews_path)
+        returns = pd.read_csv(returns_path)
+
+        rows, chart_data = build_metrics(sales, reviews, returns)
+        context['data'] = rows
+        context['chart_data'] = chart_data
+
+    return render(request, 'users/merch_dashboard.html', context)
+
+
+# ## **Expected Output:**
+# ```
+# ASIN-1001:  # Office Chair - Lowest GMV
+#   GMV: $3978
+#   Rating: 3.0
+#   Return Rate: 8.3%
+#   Issues: Low GMV; Low rating
+#   Actions: Review pricing and marketing; Investigate quality...
+
+# ASIN-1000:  # Vacuum Cleaner
+#   GMV: $4095
+#   Rating: 2.8
+#   Return Rate: 10.0%
+#   Issues: Low rating; High return rate (borderline)
+#   Actions: Investigate quality; Inspect returns...
+
+# ASIN-1002:  # LED Monitor - Best performer
+#   GMV: $4593
+#   Rating: 3.8
+#   Return Rate: 2.6%
+#   Issues: No major issues detected
+#   Actions: No action needed

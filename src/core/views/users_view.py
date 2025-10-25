@@ -278,6 +278,7 @@ def merch_dashboard(request):
             "gmv": [r['gmv'] for r in rows],
             "rating": [r['avg_rating'] for r in rows],
             "returns": [r['return_rate'] for r in rows],
+            "total_orders": [r['total_orders'] for r in rows]
         }
 
         return rows, chart_data

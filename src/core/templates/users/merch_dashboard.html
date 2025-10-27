@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Merch Tech Dashboard</title>
+    <title>Tech | Product Insights Dashboard</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,37 +12,31 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
       body {
         background-color: #f8f9fa;
       }
+
       .top-controls {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         gap: 10px;
       }
+
       .chart-card {
         background: white;
         border-radius: 10px;
         padding: 20px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       }
+
       .chart-card canvas {
         max-height: 350px;
       }
-      .table-container {
-        background: white;
-        border-radius: 10px;
-        padding: 15px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        margin-top: 30px;
-      }
+
       .table-container {
         background: white;
         border-radius: 12px;
@@ -50,6 +44,8 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         margin-top: 30px;
         overflow-x: auto;
+        max-height: 500px;
+        overflow-y: auto;
       }
 
       .table {
@@ -102,13 +98,18 @@
       }
 
       .table td:nth-child(3) {
-        color: #f39c12; /* Avg Rating */
+        color: #f39c12;
         font-weight: 600;
       }
 
       .table td:nth-child(4) {
-        color: #e74c3c; /* Return rate */
+        color: #e74c3c;
         font-weight: 600;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
@@ -116,7 +117,9 @@
   <body>
     <div class="container py-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="fw-bold">📈 Merch Tech — Product Dashboard</h1>
+        <h1 class="fw-bold text-primary">
+          <i class="bi bi-bar-chart-line"></i>Product Insights Dashboard
+        </h1>
       </div>
 
       <!-- Upload & Download Buttons -->
@@ -146,6 +149,7 @@
               class="btn btn-outline-info"
               id="infoBtn"
               title="Show instructions"
+              aria-label="Show instructions"
             >
               <i class="bi bi-info-circle"></i>
             </button>
@@ -159,7 +163,9 @@
 
       {% if error %}
       <div class="alert alert-danger">{{ error }}</div>
-      {% endif %} {% if data and chart_data.labels %}
+      {% endif %}
+
+      {% if data and chart_data.labels %}
       <!-- Charts -->
       <div class="row mb-4">
         <div class="col-md-6">
@@ -174,13 +180,13 @@
           </div>
         </div>
 
-        <!-- New: Return Rate with Lag Chart -->
         <div class="col-md-6 mt-4">
           <div class="chart-card text-center">
             <h5 class="mb-3">🧩 Return Rate Contribution by Product</h5>
             <canvas id="returnPieChart"></canvas>
           </div>
         </div>
+
         <div class="col-md-6 mt-4">
           <div class="chart-card text-center">
             <h5 class="mb-3">🛒 Orders Distribution by Product</h5>
@@ -227,6 +233,7 @@
           </tbody>
         </table>
       </div>
+
       {% else %}
       <div class="alert alert-info mt-4">
         Upload a JSON file to see analysis.
@@ -235,180 +242,174 @@
     </div>
 
     <script>
-            {% if chart_data.labels %}
-                                const chartData = {{ chart_data|safe }};
+      {% if chart_data.labels %}
+      const chartData = {{ chart_data|safe }};
 
-                                // GMV & Return Rate Chart
-                                new Chart(document.getElementById("gmvChart"), {
-                                  type: "bar",
-                                  data: {
-                                    labels: chartData.labels,
-                                    datasets: [
-                                      {
-                                        label: "GMV",
-                                        data: chartData.gmv,
-                                        backgroundColor: "rgba(54, 162, 235, 0.7)",
-                                        yAxisID: 'yGMV'
-                                      },
-                                      {
-                                        label: "Return Rate (%)",
-                                        data: chartData.returns,
-                                        backgroundColor: "rgba(255, 99, 132, 0.7)",
-                                        yAxisID: 'yReturn'
-                                      },
-                                    ],
-                                  },
-                                  options: {
-                                    responsive: true,
-                                    plugins: { legend: { position: "top" } },
-                                    scales: {
-                                      yGMV: {
-                                        type: 'linear',
-                                        position: 'left',
-                                        ticks: { beginAtZero: true }
-                                      },
-                                      yReturn: {
-                                        type: 'linear',
-                                        position: 'right',
-                                        ticks: { beginAtZero: true },
-                                        grid: { drawOnChartArea: false }
-                                      }
-                                    }
-                                  },
-                                });
+      // GMV & Return Rate Chart
+      new Chart(document.getElementById("gmvChart"), {
+        type: "bar",
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: "GMV",
+              data: chartData.gmv,
+              backgroundColor: "rgba(54, 162, 235, 0.7)",
+              yAxisID: "yGMV",
+            },
+            {
+              label: "Return Rate (%)",
+              data: chartData.returns,
+              backgroundColor: "rgba(255, 99, 132, 0.7)",
+              yAxisID: "yReturn",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: "top" } },
+          scales: {
+            yGMV: {
+              type: "linear",
+              position: "left",
+              ticks: { beginAtZero: true },
+            },
+            yReturn: {
+              type: "linear",
+              position: "right",
+              ticks: { beginAtZero: true },
+              grid: { drawOnChartArea: false },
+            },
+          },
+        },
+      });
 
-                                // Avg Rating Chart
-                                new Chart(document.getElementById("ratingChart"), {
-                                  type: "line",
-                                  data: {
-                                    labels: chartData.labels,
-                                    datasets: [
-                                      {
-                                        label: "Avg Rating",
-                                        data: chartData.rating,
-                                        borderColor: "rgba(255, 206, 86, 0.9)",
-                                        borderWidth: 2,
-                                        fill: false,
-                                        tension: 0.3,
-                                        pointRadius: 3
-                                      },
-                                    ],
-                                  },
-                                  options: {
-                                    responsive: true,
-                                    scales: {
-                                      y: { min: 0, max: 5 },
-                                    },
-                                  },
-                                });
-                    // Return Rate Change (Δ%) Line Chart
-                    // Return Rate Contribution Pie Chart
-              (function () {
-                const labels = chartData.labels;
-                const returns = chartData.returns;
+      // Avg Rating Chart
+      new Chart(document.getElementById("ratingChart"), {
+        type: "line",
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: "Avg Rating",
+              data: chartData.rating,
+              borderColor: "rgba(255, 206, 86, 0.9)",
+              borderWidth: 2,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 3,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { min: 0, max: 5 },
+          },
+        },
+      });
 
-                new Chart(document.getElementById("returnPieChart"), {
-                  type: "pie",
-                  data: {
-                    labels: labels,
-                    datasets: [
-                      {
-                        label: "Return Rate (%)",
-                        data: returns,
-                        backgroundColor: [
-                          "rgba(255, 99, 132, 0.7)",
-                          "rgba(54, 162, 235, 0.7)",
-                          "rgba(255, 206, 86, 0.7)",
-                          "rgba(75, 192, 192, 0.7)",
-                          "rgba(153, 102, 255, 0.7)",
-                          "rgba(255, 159, 64, 0.7)",
-                        ],
-                        borderColor: "white",
-                        borderWidth: 2,
-                      },
-                    ],
+      // Return Rate Pie Chart
+      (() => {
+        const labels = chartData.labels;
+        const returns = chartData.returns;
+        new Chart(document.getElementById("returnPieChart"), {
+          type: "pie",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Return Rate (%)",
+                data: returns,
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.7)",
+                  "rgba(54, 162, 235, 0.7)",
+                  "rgba(255, 206, 86, 0.7)",
+                  "rgba(75, 192, 192, 0.7)",
+                  "rgba(153, 102, 255, 0.7)",
+                  "rgba(255, 159, 64, 0.7)",
+                ],
+                borderColor: "white",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: "bottom" },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => `${ctx.label}: ${ctx.raw}% return rate`,
+                },
+              },
+            },
+          },
+        });
+      })();
+
+      // Orders Doughnut Chart
+      (() => {
+        const labels = chartData.labels;
+        const orders = chartData.total_orders || [];
+        const total = orders.reduce((a, b) => a + b, 0);
+
+        new Chart(document.getElementById("ordersDoughnutChart"), {
+          type: "doughnut",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                data: orders,
+                backgroundColor: [
+                  "rgba(54, 162, 235, 0.7)",
+                  "rgba(255, 206, 86, 0.7)",
+                  "rgba(75, 192, 192, 0.7)",
+                  "rgba(255, 99, 132, 0.7)",
+                  "rgba(153, 102, 255, 0.7)",
+                  "rgba(255, 159, 64, 0.7)",
+                ],
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            cutout: "70%",
+            plugins: {
+              legend: { position: "bottom" },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => {
+                    const pct = ((ctx.raw / total) * 100).toFixed(1);
+                    return `${ctx.label}: ${ctx.raw} orders (${pct}%)`;
                   },
-                  options: {
-                    responsive: true,
-                    plugins: {
-                      legend: {
-                        position: "bottom",
-                      },
-                      tooltip: {
-                        callbacks: {
-                          label: function (ctx) {
-                            return `${ctx.label}: ${ctx.raw}% return rate`;
-                          },
-                        },
-                      },
-                    },
-                  },
-                });
-              })();
+                },
+              },
+              afterDraw: (chart) => {
+                const { width, height, ctx } = chart;
+                ctx.restore();
+                const fontSize = (height / 160).toFixed(2);
+                ctx.font = `${fontSize}em sans-serif`;
+                ctx.textBaseline = "middle";
+                const text = `Total ${total}`;
+                const textX = Math.round(
+                  (width - ctx.measureText(text).width) / 2
+                );
+                const textY = height / 1.9;
+                ctx.fillStyle = "#333";
+                ctx.fillText(text, textX, textY);
+                ctx.save();
+              },
+            },
+          },
+        });
+      })();
+      {% endif %}
 
-              // Total Orders Doughnut Chart
-              (function () {
-                const labels = chartData.labels;
-                const orders = chartData.total_orders || [];
-
-                // Calculate total sum
-                const total = orders.reduce((a, b) => a + b, 0);
-
-                new Chart(document.getElementById("ordersDoughnutChart"), {
-                  type: "doughnut",
-                  data: {
-                    labels: labels,
-                    datasets: [
-                      {
-                        data: orders,
-                        backgroundColor: [
-                          "rgba(54, 162, 235, 0.7)",
-                          "rgba(255, 206, 86, 0.7)",
-                          "rgba(75, 192, 192, 0.7)",
-                          "rgba(255, 99, 132, 0.7)",
-                          "rgba(153, 102, 255, 0.7)",
-                          "rgba(255, 159, 64, 0.7)",
-                        ],
-                        borderColor: "#fff",
-                        borderWidth: 2,
-                      },
-                    ],
-                  },
-                  options: {
-                    responsive: true,
-                    cutout: "70%",
-                    plugins: {
-                      legend: {
-                        position: "bottom",
-                      },
-                      tooltip: {
-                        callbacks: {
-                          label: function (ctx) {
-                            const pct = ((ctx.raw / total) * 100).toFixed(1);
-                            return `${ctx.label}: ${ctx.raw} orders (${pct}%)`;
-                          },
-                        },
-                      },
-                      // ✅ Center Text Plugin
-                      afterDraw: (chart) => {
-                        const { width, height, ctx } = chart;
-                        ctx.restore();
-                        const fontSize = (height / 160).toFixed(2);
-                        ctx.font = `${fontSize}em sans-serif`;
-                        ctx.textBaseline = "middle";
-                        const text = `Total ${total}`;
-                        const textX = Math.round((width - ctx.measureText(text).width) / 2);
-                        const textY = height / 1.9;
-                        ctx.fillStyle = "#333";
-                        ctx.fillText(text, textX, textY);
-                        ctx.save();
-                      },
-                    },
-                  },
-                });
-              })();
-              {% endif %}
-               document.getElementById("infoBtn").addEventListener("click", () => {
+      // Info popup
+      document.getElementById("infoBtn").addEventListener("click", () => {
         Swal.fire({
           title: "📘 How to Use",
           html: `
